@@ -1,7 +1,7 @@
 import passport from 'passport';
 import passportLocal from 'passport-local';
 const LocalStrategy = passportLocal.Strategy;
-import { Response, Request, NextFunction } from "express";
+import { Response, Request } from "express";
 
 
 import { UserStore, User } from '../common/types';
@@ -29,44 +29,25 @@ export function configurePassport(userStore: UserStore) {
 
 }
 
-export function isAuthenticated(req: Request, res: Response, next: NextFunction) {
-    if(req.isAuthenticated())
-    {
-        next();
-    }
-    else
-    {
-        res.status(401).send('Not authenticated');
-    }
-};
-
-export function isAdmin(req: Request, res: Response, next: NextFunction) {
-    if(req.isAuthenticated() && req.user.isAdmin)
-    {
-        next();
-    }
-    else
-    {
-        res.status(401).send('Not authenticated');
-    }
-};
-
-export function isAdminOrSelf(req: Request, res: Response, next: NextFunction)
-{
-  var user_id = req.param('user_id');
-  if(user_id === req.user.id)
-  {
-    next();
-  }
-  else
-  {
-    isAdmin(req, res, next);
-  }
-};
 
 export let login = passport.authenticate('local', { successReturnToOrRedirect: '/', failureRedirect: '/login' });
 
 export function logout(req: Request, res: Response) {
   req.logout();
   res.redirect('/login');
+}
+
+export function checkAuth(req: Request, res: Response) {
+
+    let user = req.user;
+
+    if(user)
+    {
+      res.setHeader('X-Authenticated-User', user.id);
+      res.setHeader('X-Authenticated-User-Admin', user.isAdmin);
+    }
+    else
+    {
+        res.status(401).send('Authentication Needed');
+    }
 }

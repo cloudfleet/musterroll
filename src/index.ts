@@ -1,12 +1,12 @@
 import express from 'express';
+import path from "path";
 import ldap from 'ldapjs';
 
 import { UserStoreJson } from './user_store';
 import { LdapUserServer } from './ldap';
+import { UserAuthServer } from './auth';
 import { UserAPIServer } from './api';
 import { OAuthServer } from './oauth';
-import { FormServer } from './forms';
-import { WebfingerServer } from './webfinger';
 
 const userStoragePath: string = process.env.USER_STORAGE_PATH || "/opt/cloudfleet/data";
 const domain: string = process.env.DOMAIN || "example.com";
@@ -41,21 +41,23 @@ if(process.env.LDAP_ENABLED == 'true') {
 }
 
 
-if(process.env.API_ENABLED == 'true' || process.env.WEBFINGER_ENABLED) {
+if(process.env.AUTH_ENABLED == 'true') {
   const server = express();
+
+  server.set("views", path.join(__dirname, "views"));
+  server.set("view engine", "pug");
+  server.use(
+    express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
+  );
+
+  new UserAuthServer(userStore, server);
 
   if(process.env.API_ENABLED == 'true') {
     new UserAPIServer(userStore, server);
-    new FormServer(server);
   }
 
   if(process.env.OAUTH_ENABLED == 'true') {
     new OAuthServer(userStore, server);
-  }
-
-
-  if(process.env.WEBFINGER_ENABLED) {
-    new WebfingerServer(server);
   }
 
 

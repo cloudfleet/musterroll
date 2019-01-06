@@ -11,7 +11,7 @@
   "scripts": {
     "describe": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
-    "build:main": "tsc -p tsconfig.json",
+    "build:main": "tsc -p tsconfig.json && cp -R public build/main && cp -R views build/main",
     "build:module": "tsc -p tsconfig.module.json",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
@@ -52,7 +52,6 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.119",
     "bcrypt": "^3.0.3",
     "connect-ensure-login": "^0.1.1",
     "cookie-parser": "^1.4.3",
@@ -65,7 +64,7 @@
     "oauth2orize": "^1.11.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
-    "sha.js": "^2.4.11",
+    "pug": "^2.0.3",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
@@ -77,6 +76,7 @@
     "@types/express": "^4.16.0",
     "@types/express-session": "^1.15.11",
     "@types/ldapjs": "^1.0.3",
+    "@types/lodash": "^4.14.119",
     "@types/oauth2orize": "^1.8.5",
     "@types/passport": "^1.0.0",
     "@types/passport-local": "^1.0.33",

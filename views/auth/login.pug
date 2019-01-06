@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  form(action='/login', method='post')
+    h1 Login
+    input(type='text', name='username', placeholder='username')
+    input(type='password', name='password', placeholder='password')
+    input(type='submit')

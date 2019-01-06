@@ -1,4 +1,4 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import { UserStore, User } from '../common/types';
 import _ from 'lodash';
 
@@ -122,3 +122,38 @@ export function setPassword(userStore: UserStore) {
     res.json({success: true});
   };
 }
+
+export function isAuthenticated(req: Request, res: Response, next: NextFunction) {
+    if(req.isAuthenticated())
+    {
+        next();
+    }
+    else
+    {
+        res.status(401).send('Not authenticated');
+    }
+};
+
+export function isAdmin(req: Request, res: Response, next: NextFunction) {
+    if(req.isAuthenticated() && req.user.isAdmin)
+    {
+        next();
+    }
+    else
+    {
+        res.status(401).send('Not authenticated');
+    }
+};
+
+export function isAdminOrSelf(req: Request, res: Response, next: NextFunction)
+{
+  var user_id = req.param('user_id');
+  if(user_id === req.user.id)
+  {
+    next();
+  }
+  else
+  {
+    isAdmin(req, res, next);
+  }
+};
