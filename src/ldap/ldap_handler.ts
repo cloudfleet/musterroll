@@ -28,8 +28,6 @@ class LdapUser extends LdapObject {
       sn: this.user.lastname,
       email: email,
       mail: email,
-
-      userPassword: '',
     }
   }
 }
