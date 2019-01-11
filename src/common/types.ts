@@ -12,6 +12,7 @@ export interface UserStore {
   updateUser(user_id: string, user_update_properties: {}): User;
   deleteUser(user_id: string): User
   setPassword(user_id: string, password_plain: string): void;
+  setAdmin(user_id: string, is_admin: boolean): void;
   isInitialized(): boolean;
   getUserForAlias(alias: string): User | undefined;
   userIdAvailable(user_id: string): boolean;

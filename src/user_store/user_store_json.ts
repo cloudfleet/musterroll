@@ -124,6 +124,16 @@ export class UserStoreJson implements UserStore
     }
   };
 
+  setAdmin(user_id: string, is_admin: boolean): void
+  {
+    const user = this.getUser(user_id);
+    if(user)
+    {
+      user.isAdmin = is_admin;
+      this.saveUsers(this.users);
+    }
+  };
+
   isInitialized(): boolean
   {
       return this.users.length > 0;

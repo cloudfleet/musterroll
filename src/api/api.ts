@@ -123,6 +123,15 @@ export function setPassword(userStore: UserStore) {
   };
 }
 
+export function setAdmin(userStore: UserStore) {
+  return function(req: Request, res: Response) {
+    const user_id = req.param('user_id');
+    const password = req.body.is_admin;
+    userStore.setAdmin(user_id, password);
+    res.json({success: true});
+  };
+}
+
 export function isAuthenticated(req: Request, res: Response, next: NextFunction) {
     if(req.isAuthenticated())
     {

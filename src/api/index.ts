@@ -3,7 +3,7 @@ import express from 'express';
 import { UserStore } from '../common/types';
 import { UserStoreJson } from '../user_store';
 import { currentUser, userForAlias, allUsers, userById, createUser, updateUser,
-  deleteUser, setPassword, isAdmin, isAdminOrSelf, isAuthenticated } from './api';
+  deleteUser, setPassword, setAdmin, isAdmin, isAdminOrSelf, isAuthenticated } from './api';
 
 export class UserAPIServer {
 
@@ -21,6 +21,7 @@ export class UserAPIServer {
     app.put('/api/v1/users/:user_id', isAdminOrSelf, updateUser(this.userStore));
     app.delete('/api/v1/users/:user_id', isAdmin, deleteUser(this.userStore));
     app.put('/api/v1/users/:user_id/password', isAdminOrSelf, setPassword(this.userStore));
+    app.put('/api/v1/users/:user_id/is_admin', isAdmin, setAdmin(this.userStore));
 
   }
 
