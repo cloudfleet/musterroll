@@ -139,6 +139,10 @@ export function isAdmin(req: Request, res: Response, next: NextFunction) {
     {
         next();
     }
+    else if(req.isAuthenticated())
+    {
+        res.status(401).send('Unauthorized');
+    }
     else
     {
         res.status(401).send('Not authenticated');
