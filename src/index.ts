@@ -12,7 +12,7 @@ const userStoragePath: string = process.env.USER_STORAGE_PATH || "/opt/cloudflee
 const domain: string = process.env.DOMAIN || "example.com";
 const testing_mode: boolean = process.env.DEBUG == "true";
 
-const userStore = new UserStoreJson(userStoragePath);
+const userStore = new UserStoreJson(domain, userStoragePath);
 
 
 if(testing_mode){
@@ -23,9 +23,8 @@ if(process.env.LDAP_ENABLED == 'true') {
   console.log("Starting LDAP server with base domain " + domain);
 
   const ldapServer = ldap.createServer();
-  const rootDN = domain.split(".").map((part) => "dc=" + part).join(", ");
 
-  new LdapUserServer(ldapServer, rootDN, userStore, domain);
+  new LdapUserServer(ldapServer, userStore, domain);
 
   try{
     const ldap_port: number = Number(process.env.LDAP_PORT) || 389;

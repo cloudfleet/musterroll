@@ -8,7 +8,7 @@ import { currentUser, userForAlias, allUsers, userById, createUser, updateUser,
 export class UserAPIServer {
 
   constructor(
-    private userStore: UserStore = new UserStoreJson(),
+    private userStore: UserStore = new UserStoreJson('example.com'),
     app = express()
   ){
 

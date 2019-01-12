@@ -4,7 +4,7 @@ import { UserStoreJson } from '../user_store';
 
 export class OAuthServer {
   constructor(
-    userStore: UserStore = new UserStoreJson(),
+    userStore: UserStore = new UserStoreJson('example.com'),
     app = express()
   ){
     userStore.getUsers();

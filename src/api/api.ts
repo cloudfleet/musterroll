@@ -7,6 +7,7 @@ class UserUpdateProperties {
   aliases?: string[];
   firstname?: string;
   lastname?: string;
+  email?: string;
 }
 
 function sanitizeOutgoingUserData(user: User) {
@@ -15,12 +16,13 @@ function sanitizeOutgoingUserData(user: User) {
     aliases: user.aliases,
     firstname: user.firstname,
     lastname: user.lastname,
-    isAdmin: user.isAdmin
+    isAdmin: user.isAdmin,
+    email: user.email
   };
 };
 
 function sanitizeIncomingUserData(user_properties: {}): UserUpdateProperties {
-  return _.pick(user_properties, 'id', 'aliases', 'firstname', 'lastname');
+  return _.pick(user_properties, 'id', 'aliases', 'firstname', 'lastname', 'email');
 };
 
 
@@ -94,7 +96,7 @@ export function createUser(userStore: UserStore) {
       }
       else
       {
-        userStore.addUser(new User(user_id))
+        userStore.addUser(user_id, user_properties.aliases, user_properties.firstname, user_properties.lastname, user_properties.email);
         res.json(sanitizeOutgoingUserData(userStore.updateUser(user_id, user_properties)));
       }
   };

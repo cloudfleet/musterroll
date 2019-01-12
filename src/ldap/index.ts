@@ -7,12 +7,13 @@ export class LdapUserServer {
 
   constructor(
     server: Server,
-    public rootDN: string = 'dc=users, dc=example, dc=com',
     public userStore: UserStore,
-    public domain: string
+    domain: string
   )
   {
+    const rootDN = domain.split(".").map((part) => "dc=" + part).join(", ");
     const searchHandler = new LdapHandler(userStore, parseDN(rootDN), domain);
+
 
     server.bind('ou=Users,'+rootDN, function(req, res, next) {
 
@@ -76,4 +77,5 @@ export class LdapUserServer {
         return next();
     });
   }
+
 }

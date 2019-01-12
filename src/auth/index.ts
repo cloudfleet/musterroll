@@ -14,7 +14,7 @@ import { configurePassport, login, logout, checkAuth } from './auth';
 export class UserAuthServer {
 
   constructor(
-    userStore: UserStore = new UserStoreJson(),
+    userStore: UserStore = new UserStoreJson('example.com'),
     app = express()
   ){
 

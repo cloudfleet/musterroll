@@ -4,15 +4,16 @@ import _ from 'lodash';
 
 
 
-export class UserStoreJson implements UserStore
+export class UserStoreJson extends UserStore
 {
   users: User[];
 
   constructor(
+    domain: string,
     private config_file_location: string = 'data/',
     private config_file_name: string = 'users.json'
   ) {
-
+    super(domain);
     if(!fs.existsSync(this.config_file_location))
     {
         fs.mkdirSync(this.config_file_location);
@@ -26,7 +27,7 @@ export class UserStoreJson implements UserStore
       try{
           console.log("UserStoreJson - Loading users from " + this.config_file_location + this.config_file_name);
           const fileContent = fs.readFileSync(this.config_file_location + this.config_file_name).toString();
-          return JSON.parse(fileContent).map((user_data: any) => Object.assign(new User(user_data['id']), user_data));
+          return JSON.parse(fileContent).map((user_data: any) => Object.assign(new User(user_data['id'], this.domain), user_data));
       }
       catch (e) {
           console.log("Could not read file " + this.config_file_location + this.config_file_name + ", creating empty store");
@@ -92,7 +93,14 @@ export class UserStoreJson implements UserStore
     }
   }
 
-  addUser(user: User): User {
+  addUser(
+    user_id: string,
+    aliases?: string[],
+    firstname?: string,
+    lastname?: string,
+    email?: string
+  ): User {
+    const user = new User(user_id, this.domain, firstname, lastname, aliases, false, email);
     this.users.push(user);
     this.saveUsers(this.users);
     return user;
@@ -138,14 +146,5 @@ export class UserStoreJson implements UserStore
   {
       return this.users.length > 0;
   };
-
-  getUserForAlias(alias: string): User | undefined {
-    return this.getUsers().find((user) => user.id === alias || user.aliases.indexOf(alias) > -1);
-  };
-
-  userIdAvailable(user_id: string): boolean {
-    return !this.getUserForAlias(user_id);
-  }
-
 
 };
