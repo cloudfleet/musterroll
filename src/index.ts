@@ -8,7 +8,7 @@ import { UserAuthServer } from './auth';
 import { UserAPIServer } from './api';
 import { OAuthServer } from './oauth';
 
-const userStoragePath: string = process.env.USER_STORAGE_PATH || "/opt/cloudfleet/data";
+const userStoragePath: string = process.env.USER_STORAGE_PATH || "./data/";
 const domain: string = process.env.DOMAIN || "example.com";
 const testing_mode: boolean = process.env.DEBUG == "true";
 
