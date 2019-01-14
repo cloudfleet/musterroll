@@ -13,6 +13,7 @@ class UserUpdateProperties {
 function sanitizeOutgoingUserData(user: User) {
   return {
     id: user.id,
+    uuid: user.uuid,
     aliases: user.aliases,
     firstname: user.firstname,
     lastname: user.lastname,
@@ -128,8 +129,8 @@ export function setPassword(userStore: UserStore) {
 export function setAdmin(userStore: UserStore) {
   return function(req: Request, res: Response) {
     const user_id = req.param('user_id');
-    const password = req.body.is_admin;
-    userStore.setAdmin(user_id, password);
+    const is_admin = req.body.is_admin == 'true';
+    userStore.setAdmin(user_id, is_admin);
     res.json({success: true});
   };
 }
