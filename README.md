@@ -1,3 +1,15 @@
 # musterroll
 
 A lightweight LDAP server for user management
+|
+|-|-|-|
+USER_STORAGE_PATH
+DOMAIN
+DEBUG
+LDAP_ENABLED
+LDAP_PORT
+AUTH_ENABLED
+API_ENABLED
+OAUTH_ENABLED
+API_PORT
+SESSION_SECRET
